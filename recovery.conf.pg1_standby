@@ -1,0 +1,4 @@
+standby_mode = 'on'
+primary_conninfo = 'host=pg2 port=5432 user=user password=passw0rd'
+recovery_target_timeline = 'latest'      #optional
+trigger_file = '/recover.trigger'

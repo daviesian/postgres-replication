@@ -1,0 +1,30 @@
+  pg1:
+    image: postgres:9.6.0
+    volumes:
+      - data-1:/var/lib/postgresql/data
+      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: passw0rd
+
+  pg2-create-standby:
+    image: postgres:9.6.0
+    volumes:
+      - data-2:/var/lib/postgresql/data
+      - ./recovery.conf.pg2_standby:/recovery.conf
+    command: /bin/sh -c "rm -rf /var/lib/postgresql/data/* && pg_basebackup -h pg1 -D /var/lib/postgresql/data -U user -v -P && cp /recovery.conf /var/lib/postgresql/data/recovery.conf"
+
+  pg2:
+    image: postgres:9.6.0
+    volumes:
+      - data-2:/var/lib/postgresql/data
+      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: passw0rd
+
+volumes:
+  data-1:
+  data-2:
