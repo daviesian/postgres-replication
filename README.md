@@ -13,6 +13,7 @@
   `docker-compose run --rm pg2-create-standby && docker-compose up pg2`
   
 * Check that it's working:
+
   ```
   # Create table on pg1
   docker-compose exec pg1 gosu postgres psql user -c 'create table foo (x text)'
@@ -31,6 +32,7 @@
 
   `docker-compose exec pg2 touch /recover.trigger`
 * Check that it's working:
+
   ```
   # Should now be able to write to pg2
   docker-compose exec pg2 gosu postgres psql user -c "insert into foo values ('x')"
